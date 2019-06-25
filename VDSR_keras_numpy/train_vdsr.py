@@ -15,23 +15,28 @@ import os, threading
 import numpy as np
 from PIL import Image
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
-DATA_X_PATH = "./data/train_x/"
-DATA_Y_PATH = "./data/train_y/"
+# laod config details
 
-# patch_size = (32,32)
 
-#patch_list = [(32, 32), (64, 64), (128, 128), (256, 256)]
-patch_list = [(512,512),(512,512),(512,512),(512,512)]
-TARGET_IMG_SIZE = (512,512,1)
 
-TRAIN_TEST_RATIO = (7, 3) # sum should be 10
-BATCH_SIZE = 8
-EPOCHS = 700
-LR = 0.001
-num_channels = 1
+import yaml
+from yaml import Loader
+with open("config.yml", 'r') as config_file:
+	config_params = yaml.load(config_file, Loader=Loader)
 
+
+os.environ['CUDA_VISIBLE_DEVICES'] = config_params['cuda_device']
+
+DATA_X_PATH = config_params['data_x_path']
+DATA_Y_PATH = config_params['data_y_path']
+patch_list = config_params['patch_list']
+
+
+TRAIN_TEST_RATIO = config_params['train_test_ratio']
+BATCH_SIZE = config_params['batch_size']
+EPOCHS = config_params['epochs']
+LR = config_params['LR']
 
 
 def tf_log10(x):
@@ -40,9 +45,61 @@ def tf_log10(x):
 	return numerator / denominator
 
 
+def generate_numpy_slices():
+	import os
+
+	np_files = {}
+
+	# get all the numpy data and generate the slices
+	np_files['data_x_path'] = os.listdir(config_params['data_x_path'])
+	np_files['data_y_path'] = os.listdir(config_params['data_y_path'])
+	np_files['data_test_path'] = os.listdir(config_params['data_test_path'])
+
+	for one_dataset in np_files:
+
+		# if there are no numpy slices in the folder, then only generate the slices
+
+		if len(np_files[one_dataset]) < 4:
+			print(" Generating the numpy slices for: " + one_dataset)
+
+			#  get all the numpy files under the specific dir
+
+			if 'x' in one_dataset:
+				all_np_files_in_one_set = os.listdir(config_params['numpy_x_path'])
+				np_path = config_params['numpy_x_path']
+				data_path = config_params['data_x_path']
+
+			elif 'y' in one_dataset:
+				all_np_files_in_one_set = os.listdir(config_params['numpy_y_path'])
+				np_path = config_params['numpy_y_path']
+				data_path = config_params['data_y_path']
+
+			elif 'test' in one_dataset:
+				all_np_files_in_one_set = os.listdir(config_params['numpy_test_path'])
+				np_path = config_params['numpy_test_path']
+				data_path = config_params['data_test_path']
+
+			# print(all_np_files_in_one_set)
+
+			for one_file in all_np_files_in_one_set:
+				if '.npy' in one_file:
+					file_name = one_file.split('.')[1]
+
+					# load the numpy data for that file
+					np_data = np.load(np_path + one_file)
+
+					# get numer of slices
+					num_slices = np_data.shape[2]
+
+					for slice_num in range(num_slices):
+						np.save( file=data_path+'/'+file_name + '_' + str(slice_num) + '.npy', arr=np_data[slice_num])
+
+		print( "NumPy slices Ganaration : Done !!")
+		return
+
 # Helper function to generate image patches for both input and target image
 
-def generate_patch(input_image,target_image, patch_size):
+def generate_patch(input_image, target_image, patch_size):
 	w, h = input_image.size
 	th, tw = patch_size
 	if w == tw and h == th:
@@ -77,12 +134,12 @@ def load_image_data(in_img, tgt_img, patch_size):
 	return inp, tgt
 
 
-# supporting only JPG and PNG
+# only NumPy files rare supported
 def get_image_list(data_path):
 	l = os.listdir(data_path)
 	train_list = []
 	for f in l:
-		if f[-4:] == '.jpg'or f[-4:] == '.png':
+		if f[-4:] == '.npy':
 			train_list.append(f)
 	return train_list
 
@@ -93,40 +150,17 @@ def get_image_batch(target_list, offset):
 	batch_y = []
 	idx = random.randint(1, 3)
 	patch_size = patch_list[idx]
-	Patch_height, Patch_width = patch_size
 
 	for t in target:
-
-		# Patch_height, Patch_width = patch_size
-		# patch_size = (64,64)
-		# print("ewr", patch_size)
-		# get input and target image
 		x_file = os.path.join(DATA_X_PATH, t)
 		y_file = os.path.join(DATA_Y_PATH, t)
 
 		x,y = load_image_data(x_file,y_file, patch_size=patch_size)
 
-
 		x_patch, y_patch  = np.array(x), np.array(y)
-		# print(x_patch.shape,y_patch.shape)
-		#x = resize(x, (Patch_height, Patch_width), interpolation=INTER_CUBIC)
-		#x = resize(x_patch, (TARGET_IMG_SIZE[0], TARGET_IMG_SIZE[1]), interpolation=INTER_CUBIC)
-		#x = np.reshape(x, (TARGET_IMG_SIZE[0], TARGET_IMG_SIZE[1],1))
-		x = np.reshape(x_patch, (x_patch.shape[0],x_patch.shape[1],1))
-
-
-		#y = resize(y_patch, (TARGET_IMG_SIZE[0], TARGET_IMG_SIZE[1]), interpolation=INTER_CUBIC)
-		#y = np.reshape(y, ( TARGET_IMG_SIZE[0], TARGET_IMG_SIZE[1],1))
+		x = np.reshape(x_patch, (x_patch.shape[0], x_patch.shape[1], 1))
 		y = np.reshape(y_patch, (y_patch.shape[0], y_patch.shape[1], 1))
 
-
-		# x = y.copy()
-		# x = resize(x, (128,128))
-		# x = resize(x, (Patch_height, Patch_width), interpolation=INTER_CUBIC)
-		# x = np.reshape(x, (x.shape[0], x.shape[1], 1))
-
-		# print(x.shape, y.shape)
-		# print(x.shape,y.shape)
 		batch_x.append(x)
 		batch_y.append(y)
 	batch_x = np.array(batch_x)
@@ -172,16 +206,19 @@ def PSNR(y_true, y_pred):
 def SSIM(y_true, y_pred):
 	max_pixel = 255.0
 	return tf.image.ssim(y_pred, y_true, max_pixel)
- 
 
 
-# Get the training and testing data
+""" generate the numpy 2D slices form the numpy volumes """
+generate_numpy_slices()
+
+"""	Get the training and testing data """
+
 img_list = get_image_list(DATA_X_PATH)
-
-imgs_to_train = len(img_list) *  TRAIN_TEST_RATIO[0] // 10
+imgs_to_train = (len(img_list) * TRAIN_TEST_RATIO[0] )// 10
 
 train_list = img_list[:imgs_to_train]
 val_list = img_list[imgs_to_train:]
+
 
 
 input_img = Input(shape=(None, None,1))
@@ -194,35 +231,7 @@ model = Activation('relu')(model)
 model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
 model = Activation('relu')(model)
 # model = add([model2, model1])
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = add([model3, model2])
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# # model = add([model4, model3])
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# # model = add([model5, model4])
-#
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = add([model6, model5])
 
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
-# model = Activation('relu')(model)
-# #model = add([model3, model2])
 #
 # model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
 # model = Activation('relu')(model)
@@ -232,78 +241,6 @@ model = Activation('relu')(model)
 # model = Activation('relu')(model)
 #model = add([model4, model3])
 
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model5 = Activation('relu')(model)
-#model = add([model5, model4])
-
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model4 = Activation('relu')(model)
-#model = add([model4, model3])
-
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model5 = Activation('relu')(model)
-#model = add([model5, model4])
-
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model6 = Activation('relu')(model)
-#model = add([model6, model5])
-
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model7 = Activation('relu')(model)
-#model = add([model7, model6])
-
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model = Activation('relu')(model)
-#model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal')(model)
-#model8 = Activation('relu')(model)
-
-#model = add([model8, model7])
 
 # model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_last')(model)
 # model = Activation('relu')(model)
@@ -341,7 +278,7 @@ callbacks_list = [checkpoint,lr_scheduler]
 
 model.fit_generator(image_gen(train_list), steps_per_epoch=len(train_list) // BATCH_SIZE, \
 					validation_data=image_gen(val_list), validation_steps=len(val_list) // BATCH_SIZE, \
-					epochs=EPOCHS, workers=1, callbacks=callbacks_list)
+					epochs=EPOCHS,use_multiprocessing=True,  workers=1, callbacks=callbacks_list)
 
 
 model.save('./model/vdsr_model.h5')  # creates a HDF5 file
