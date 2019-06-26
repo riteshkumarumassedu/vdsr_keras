@@ -9,19 +9,12 @@ from yaml import Loader
 with open("config.yml", 'r') as config_file:
     config_params = yaml.load(config_file, Loader=Loader)
 
-<<<<<<< HEAD
 def num_char(x):
 
     tmp = (x.split('_')[1]).split('.')[0]
     return int(tmp)
-=======
-def cmp_items(a,b):
-    if a.split('_')[1] > b.split('_')[1]:
-        return 1
-    else:
-        return -1
 
->>>>>>> d7fb2b9... [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights
+
 
 def stitch_numpy_slices():
     np_slices_path = config_params['np_slices_path']
@@ -30,23 +23,14 @@ def stitch_numpy_slices():
 
     np_slices = os.listdir(np_slices_path)
 
-<<<<<<< HEAD
-
-=======
-    np_slices.sort(key=cmp_items())
->>>>>>> d7fb2b9... [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights
-
     # remove non-numpy things from the list
     for one_file in np_slices:
         if '.npy' not in one_file:
             np_slices.remove(one_file)
 
-<<<<<<< HEAD
-    np_slices.sort(key= num_char)
-=======
+    np_slices.sort(key=num_char)
     print(np_slices)
     # stitch same files
->>>>>>> d7fb2b9... [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights
 
     file_basename = ''
     output = None
@@ -58,11 +42,9 @@ def stitch_numpy_slices():
             # get the numpy data from the file
             output = np.load(np_slices_path+one_file)
             output = np.reshape(output, (output.shape[0], output.shape[1], 1))
-            # print(output.shape)
-            # np.concatenate((output, tmp), axis=0)
+
         else:
             if file_basename in one_file:
-                # print("got another file")
                 tmp = np.load(np_slices_path + one_file)
                 tmp = np.reshape(tmp, (tmp.shape[0], tmp.shape[1], 1))
                 output = np.append(output, tmp, axis=2)
@@ -127,5 +109,3 @@ if __name__ == '__main__':
             out_pixels = np.reshape(out_pixels, target_size)
 
             np.save(file=target_path + "/" + filename, arr=out_pixels)
-
-    #
