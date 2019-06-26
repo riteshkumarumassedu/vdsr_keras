@@ -12,8 +12,27 @@ data_test_path  : './data/test/'
 train_test_ratio  : [7,3]
 batch_size  : 8
 epochs  : 700
-LR  : 0.001
+LR  : 0.01
+
+save_every : 50
+
+steps_per_epoch : 100
 
 
-patch_list  : [(512,512),(512,512),(512,512),(512,512)]
-target_image_size : (512,512)
+patch_list  : [[256,256],[256,256],[256,256],[256,256],[256,256],[256,256]]
+target_image_size : [512,512]
+
+
+# predict_vdsr variables
+
+json_path :  'model/vdsr_architecture.json'
+test_images_path  : 'data/test'
+test_dest_path  : '../../results'
+pred_tgt_size : [512,512]
+
+
+max_pixel_val : 255.0
+
+np_slices_path : './results/'
+np_stitched_output_path  : './numpy_stitch_output/'
+
