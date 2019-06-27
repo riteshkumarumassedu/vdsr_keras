@@ -47,8 +47,9 @@ def normalize_data(raw_data):
 
 def generate_numpy_slices():
 
+	"""	get all the numpy data and generate the slices	"""
+
 	np_files = {}
-	# get all the numpy data and generate the slices
 	np_files['data_x_path'] = os.listdir(config_params['data_x_path'])
 	np_files['data_y_path'] = os.listdir(config_params['data_y_path'])
 	np_files['data_test_path'] = os.listdir(config_params['data_test_path'])
@@ -167,8 +168,8 @@ def get_data_batch(target_list, offset):
 
 		x, y = load_numpy_data(x_data, y_data, patch_size=patch_size)
 
-		x = normalize_data(x)
-		y = normalize_data(y)
+		# x = normalize_data(x)
+		# y = normalize_data(y)
 
 
 		# x = np.reshape(x, (x.shape[0], x.shape[1], 1))
@@ -222,85 +223,58 @@ def SSIM(y_true, y_pred):
 	return tf.image.ssim(y_pred, y_true, config_params['max_pixel_val'])
 
 
-""" generate the numpy 2D slices form the numpy volumes """
-generate_numpy_slices()
 
-"""	Get the training and testing data """
+if __name__ == '__main__':
 
-img_list = get_data_list(DATA_X_PATH)
-imgs_to_train = (len(img_list) * TRAIN_TEST_RATIO[0] )// 10
+	""" generate the numpy 2D slices form the numpy volumes """
+	generate_numpy_slices()
 
-train_list = img_list[:imgs_to_train]
-val_list = img_list[imgs_to_train:]
+	"""	Get the training and testing data """
 
+	img_list = get_data_list(DATA_X_PATH)
+	imgs_to_train = (len(img_list) * TRAIN_TEST_RATIO[0]) // 10
 
+	train_list = img_list[:imgs_to_train]
+	val_list = img_list[imgs_to_train:]
 
-input_img = Input(shape=(1, None, None))
+	input_img = Input(shape=(1, None, None))
 
-model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(input_img)
-model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model1 = Activation('relu')(model)
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model1)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model2 = Activation('relu')(model1)
-#
-# model = add([model2, model1])
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model3 = Activation('relu')(model)
-#
-# model = add([model3, model2])
-#
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model4 = Activation('relu')(model)
-# model = add([model4, model3])
+	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(input_img)
+	model = Activation('relu')(model)
 
+	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	model = Activation('relu')(model)
 
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model = Activation('relu')(model)
-# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-# model = Activation('relu')(model)
-model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-model = Activation('relu')(model)
-model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-model = Activation('relu')(model)
-model = Conv2D(1, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-res_img = model
+	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	model = Activation('relu')(model)
 
-output_img = add([res_img, input_img])
-#output_img = res_img
-model = Model(input_img, output_img)
+	model = Conv2D(1, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
 
+	res_img = model
 
-adam = Adam(lr=LR)
-# sgd = SGD(lr=1e-5, momentum=0.9, decay=1e-5, nesterov=False)
-model.compile(adam, loss='mse', metrics=[PSNR, "accuracy"])
-model.summary()
+	output_img = add([res_img, input_img])
+	# output_img = res_img
+	model = Model(input_img, output_img)
 
-with open('./model/vdsr_architecture.json', 'w') as f:
-	f.write(model.to_json())
+	adam = Adam(lr=LR)
+	# sgd = SGD(lr=1e-5, momentum=0.9, decay=1e-5, nesterov=False)
+	model.compile(adam, loss='mse', metrics=[PSNR, "accuracy"])
+	model.summary()
 
+	with open('./model/vdsr_architecture.json', 'w') as f:
+		f.write(model.to_json())
 
-filepath="./checkpoints/model-{epoch:02d}-{PSNR:.2f}.hdf5"
-checkpoint = ModelCheckpoint(filepath, monitor=PSNR, verbose=1, mode='max',period=config_params['save_every'])
+	filepath = "./checkpoints/model-{epoch:02d}-{PSNR:.2f}.hdf5"
+	checkpoint = ModelCheckpoint(filepath, monitor=PSNR, verbose=1, mode='max', period=config_params['save_every'])
 
-lr_scheduler = ReduceLROnPlateau(monitor='val_PSNR', factor=0.5, patience=10, min_lr=0.00001)
+	lr_scheduler = ReduceLROnPlateau(monitor='val_PSNR', factor=0.5, patience=10, min_lr=0.00001)
 
-callbacks_list = [checkpoint,lr_scheduler]
+	callbacks_list = [checkpoint, lr_scheduler]
 
+	model.fit_generator(data_gen(train_list), steps_per_epoch=config_params['steps_per_epoch'], \
+						validation_data=data_gen(val_list), validation_steps=len(val_list) // BATCH_SIZE, \
+						epochs=EPOCHS, use_multiprocessing=True, workers=1, callbacks=callbacks_list)
 
-model.fit_generator(data_gen(train_list), steps_per_epoch=config_params['steps_per_epoch'], \
-					validation_data=data_gen(val_list), validation_steps=len(val_list) // BATCH_SIZE, \
-					epochs=EPOCHS, use_multiprocessing=True, workers=1, callbacks=callbacks_list)
+	model.save('./model/vdsr_model.h5')  # creates a HDF5 file
 
-
-model.save('./model/vdsr_model.h5')  # creates a HDF5 file
-
-del model  # deletes the existing model
+	del model  # deletes the existing model

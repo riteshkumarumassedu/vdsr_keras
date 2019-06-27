@@ -31,7 +31,7 @@ test_dest_path  : '../../results'
 pred_tgt_size : [512,512]
 
 
-max_pixel_val : 255.0
+max_pixel_val : 3000
 
 np_slices_path : './results/'
 np_stitched_output_path  : './numpy_stitch_output/'
