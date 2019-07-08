@@ -241,15 +241,38 @@ if __name__ == '__main__':
 
 	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(input_img)
 	model = Activation('relu')(model)
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model1 = Activation('relu')(model)
+	#
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model1)
+	# model = Activation('relu')(model)
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model2 = Activation('relu')(model1)
+	#
+	# model = add([model2, model1])
+	#
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model = Activation('relu')(model)
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model3 = Activation('relu')(model)
+	#
+	# model = add([model3, model2])
+	#
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model = Activation('relu')(model)
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model4 = Activation('relu')(model)
+	# model = add([model4, model3])
 
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model = Activation('relu')(model)
+	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# model = Activation('relu')(model)
 	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
 	model = Activation('relu')(model)
-
 	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
 	model = Activation('relu')(model)
-
 	model = Conv2D(1, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-
 	res_img = model
 
 	output_img = add([res_img, input_img])

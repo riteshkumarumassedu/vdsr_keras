@@ -83,7 +83,7 @@ def stitch_numpy_slices():
 
 if __name__ == '__main__':
 
-    run_test = True
+    run_test = False
 
     if run_test:
 

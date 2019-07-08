@@ -199,7 +199,6 @@
       <change beforePath="$PROJECT_DIR$/checkpoints/model-600-38.39.hdf5" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/checkpoints/model-650-38.01.hdf5" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/checkpoints/model-700-38.27.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/vdsr_architecture.json" beforeDir="false" afterPath="$PROJECT_DIR$/model/vdsr_architecture.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predict_vdsr.py" beforeDir="false" afterPath="$PROJECT_DIR$/predict_vdsr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_vdsr.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_vdsr.py" afterDir="false" />
@@ -215,7 +214,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="631">
+            <state relative-caret-position="684">
               <caret line="38" selection-start-line="38" selection-end-line="38" />
             </state>
           </provider>
@@ -224,8 +223,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_vdsr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="255" column="4" selection-start-line="255" selection-start-column="4" selection-end-line="255" selection-end-column="4" />
+            <state relative-caret-position="1314">
+              <caret line="90" column="42" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -233,8 +232,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/predict_vdsr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="128" column="81" selection-start-line="128" selection-start-column="81" selection-end-line="128" selection-end-column="81" />
+            <state relative-caret-position="174">
+              <caret line="85" column="20" selection-start-line="85" selection-start-column="20" selection-end-line="85" selection-end-column="20" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -264,6 +263,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode />
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -274,10 +276,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1440" />
     <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
+    <option name="width" value="1280" />
+    <option name="height" value="1001" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -296,12 +299,25 @@
             <path>
               <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
               <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
-              <item name="numpy_stitch_output" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
               <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
-              <item name="results" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy_data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy_data" type="462c0819:PsiDirectoryNode" />
+              <item name="y" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
+              <item name="numpy_stitch_output" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -311,7 +327,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/data/test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -435,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1561525607671</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="[UPDATE] removed normalization, added min pixel clip to 0, fixed multiple result files stitching">
+      <created>1561663409788</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1561663409788</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -448,15 +471,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
-    <editor active="true" />
+    <frame x="1440" y="23" width="1280" height="1001" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499002" visible="true" weight="0.15785764" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499002" visible="true" weight="0.2065131" />
       <window_info id="Structure" order="1" sideWeight="0.500998" side_tool="true" weight="0.15856236" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.14522293" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989429" weight="0.28025478" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989429" visible="true" weight="0.3487349" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4598726" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -533,18 +555,8 @@
     <MESSAGE value="[UPDATE] added numpy 2D slice generation" />
     <MESSAGE value="[UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights" />
     <MESSAGE value="fixup! [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixup! [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/predict_vdsr.py</url>
-          <line>21</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="[UPDATE] removed normalization, added min pixel clip to 0, fixed multiple result files stitching" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] removed normalization, added min pixel clip to 0, fixed multiple result files stitching" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///anaconda3/envs/keras/lib/python3.6/site-packages/tensorflow/python/ops/image_ops_impl.py">
@@ -601,22 +613,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/train_vdsr.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="255" column="4" selection-start-line="255" selection-start-column="4" selection-end-line="255" selection-end-column="4" />
+        <state relative-caret-position="1314">
+          <caret line="90" column="42" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
+        <state relative-caret-position="684">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict_vdsr.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="128" column="81" selection-start-line="128" selection-start-column="81" selection-end-line="128" selection-end-column="81" />
+        <state relative-caret-position="174">
+          <caret line="85" column="20" selection-start-line="85" selection-start-column="20" selection-end-line="85" selection-end-column="20" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
