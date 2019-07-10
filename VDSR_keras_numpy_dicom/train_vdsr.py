@@ -13,6 +13,8 @@ from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 import os, threading
 import numpy as np
 
+import pydicom
+
 
 # laod config details
 
@@ -43,6 +45,52 @@ def tf_log10(x):
 def normalize_data(raw_data):
 	norm_data = config_params['max_pixel_val']*(raw_data - np.min(raw_data)) / np.ptp(raw_data)
 	return norm_data
+
+
+"""
+	Helper function to generate numpy files from the dicom 2D images
+	for x, y and test dirs get all the directories and generate the numpy slices
+"""
+
+def generate_dicom_to_numpy_slices():
+
+	"""	Get all the dirs under dicom_to_numpy x,y, and test dirs """
+	dicom_sub_dirs = {}
+	dicom_sub_dirs['x'] = config_params['dicom_x_path']
+	dicom_sub_dirs['y'] = config_params['dicom_y_path']
+	dicom_sub_dirs['test'] = config_params['dicom_test_path']
+
+	"""	Get all the subdirs under dicom_to_numpy x,y, and test dirs """
+
+	# print(dicom_sub_dirs)
+	for key, main_dir in dicom_sub_dirs.items():
+		"""	Get all the image dirs under one key"""
+		all_sub_dirs = [f.path for f in os.scandir(main_dir) if f.is_dir()]
+		print(key, main_dir)
+
+		for one in all_sub_dirs:
+			"""	Get the main image id from the dir name """
+			exam = one.split('/')[-1]
+
+			"""	Get all the images under the current dir """
+			dcm_images = os.listdir(one)
+
+			for one_img in dcm_images:
+				"""	Only pick .dcm files"""
+				if '.dcm' in one_img:
+					ds = pydicom.dcmread(one+'/'+one_img)
+					pxl_data = ds.pixel_array
+					if key == 'x':
+						np.save(file=config_params['data_x_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+								arr=pxl_data)
+					elif key == 'y':
+						np.save(file=config_params['data_y_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+								arr=pxl_data)
+					elif key == 'test':
+						np.save(file=config_params['data_test_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+								arr=pxl_data)
+
+
 
 
 def generate_numpy_slices():
@@ -226,6 +274,9 @@ def SSIM(y_true, y_pred):
 
 if __name__ == '__main__':
 
+	generate_dicom_to_numpy_slices()
+
+	exit()
 	""" generate the numpy 2D slices form the numpy volumes """
 	generate_numpy_slices()
 

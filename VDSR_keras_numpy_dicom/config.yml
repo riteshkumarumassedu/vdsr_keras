@@ -36,3 +36,9 @@ max_pixel_val : 4200
 np_slices_path : './results/'
 np_stitched_output_path  : './numpy_stitch_output/'
 
+
+# dicom slices path
+
+dicom_x_path  : './data/dicom_to_numpy/x/'
+dicom_y_path  : './data/dicom_to_numpy/y/'
+dicom_test_path : './data/dicom_to_numpy/test/'

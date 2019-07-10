@@ -194,11 +194,7 @@
       <change afterPath="$PROJECT_DIR$/data/test/3620_97.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/test/3620_98.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/test/3620_99.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoints/model-550-38.21.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoints/model-600-38.39.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoints/model-650-38.01.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoints/model-700-38.27.hdf5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/vdsr_architecture.json" beforeDir="false" afterPath="$PROJECT_DIR$/model/vdsr_architecture.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predict_vdsr.py" beforeDir="false" afterPath="$PROJECT_DIR$/predict_vdsr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_vdsr.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_vdsr.py" afterDir="false" />
@@ -211,11 +207,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="236">
+              <caret line="18" column="21" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -223,17 +219,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_vdsr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1314">
-              <caret line="90" column="42" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="42" />
+            <state relative-caret-position="214">
+              <caret line="172" lean-forward="true" selection-start-line="172" selection-end-line="172" />
+              <folding>
+                <element signature="e#23#60#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/predict_vdsr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="85" column="20" selection-start-line="85" selection-start-column="20" selection-end-line="85" selection-end-column="20" />
+            <state relative-caret-position="262">
+              <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -270,13 +269,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/predict_vdsr.py" />
         <option value="$PROJECT_DIR$/config.yml" />
         <option value="$PROJECT_DIR$/train_vdsr.py" />
-        <option value="$PROJECT_DIR$/predict_vdsr.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="1440" />
     <option name="y" value="23" />
     <option name="width" value="1280" />
@@ -310,14 +309,7 @@
             <path>
               <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
               <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="numpy_data" type="462c0819:PsiDirectoryNode" />
-              <item name="y" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="VDSR_keras_numpy" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VDSR_keras_numpy" type="462c0819:PsiDirectoryNode" />
-              <item name="numpy_stitch_output" type="462c0819:PsiDirectoryNode" />
+              <item name="results" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -355,7 +347,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.predict_vdsr">
+  <component name="RunManager" selected="Python.train_vdsr">
     <configuration name="predict_vdsr" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="VDSR_keras" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -400,8 +392,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.predict_vdsr" />
         <item itemvalue="Python.train_vdsr" />
+        <item itemvalue="Python.predict_vdsr" />
       </list>
     </recent_temporary>
   </component>
@@ -458,7 +450,14 @@
       <option name="project" value="LOCAL" />
       <updated>1561663409788</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="[UPDATE] updated the numpy slice stitching code">
+      <created>1562619193575</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1562619193575</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView">
@@ -471,19 +470,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1440" y="23" width="1280" height="1001" extended-state="6" />
+    <frame x="1440" y="23" width="1280" height="1001" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499002" visible="true" weight="0.2065131" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499002" visible="true" weight="0.13185067" />
       <window_info id="Structure" order="1" sideWeight="0.500998" side_tool="true" weight="0.15856236" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.14522293" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989429" visible="true" weight="0.3487349" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989429" weight="0.44884488" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4598726" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49964765" weight="0.3299363" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.6511628" weight="0.4598726" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" sideWeight="0.6511628" visible="true" weight="0.17381738" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010571" side_tool="true" weight="0.1910828" />
       <window_info anchor="bottom" id="Python Console" order="10" />
@@ -556,7 +556,8 @@
     <MESSAGE value="[UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights" />
     <MESSAGE value="fixup! [UPDATE] added slice stitching and generating a single numpy file, contains the saved model and weights" />
     <MESSAGE value="[UPDATE] removed normalization, added min pixel clip to 0, fixed multiple result files stitching" />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] removed normalization, added min pixel clip to 0, fixed multiple result files stitching" />
+    <MESSAGE value="[UPDATE] updated the numpy slice stitching code" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] updated the numpy slice stitching code" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///anaconda3/envs/keras/lib/python3.6/site-packages/tensorflow/python/ops/image_ops_impl.py">
@@ -611,27 +612,30 @@
     <entry file="file://$PROJECT_DIR$/train_vdsr.py_skip">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/predict_vdsr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/train_vdsr.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1314">
-          <caret line="90" column="42" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="42" />
+        <state relative-caret-position="214">
+          <caret line="172" lean-forward="true" selection-start-line="172" selection-end-line="172" />
+          <folding>
+            <element signature="e#23#60#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict_vdsr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="85" column="20" selection-start-line="85" selection-start-column="20" selection-end-line="85" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="236">
+          <caret line="18" column="21" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
         </state>
       </provider>
     </entry>
