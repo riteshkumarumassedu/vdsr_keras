@@ -12,9 +12,8 @@ from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 import os, threading
 import numpy as np
-
+import keras.backend as k
 import pydicom
-
 
 # laod config details
 
@@ -77,23 +76,23 @@ def generate_dicom_to_numpy_slices():
 
 			for one_img in dcm_images:
 				"""	Only pick .dcm files"""
-				if '.dcm' in one_img:
+				if 'CT' in one_img:
 					ds = pydicom.dcmread(one+'/'+one_img)
 					pxl_data = ds.pixel_array
 					if key == 'x':
-						np.save(file=config_params['data_x_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+						np.save(file=config_params['data_x_path'] + exam + '_' + str(int(one_img.split('.')[-1])),
 								arr=pxl_data)
 					elif key == 'y':
-						np.save(file=config_params['data_y_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+						np.save(file=config_params['data_y_path'] + exam + '_' + str(int(one_img.split('.')[-1])),
 								arr=pxl_data)
 					elif key == 'test':
-						np.save(file=config_params['data_test_path'] + exam + '_' + str(int(one_img.split('.')[0][-3:]) - 1),
+						np.save(file=config_params['data_test_path'] + exam + '_' + str(int(one_img.split('.')[-1])),
 								arr=pxl_data)
 
 
 
 
-def generate_numpy_slices():
+def generate_numpy_slices_from_np_vol():
 
 	"""	get all the numpy data and generate the slices	"""
 
@@ -217,7 +216,7 @@ def get_data_batch(target_list, offset):
 		x, y = load_numpy_data(x_data, y_data, patch_size=patch_size)
 
 		# x = normalize_data(x)
-		y = normalize_data(y)
+		# y = normalize_data(y)
 
 
 		# x = np.reshape(x, (x.shape[0], x.shape[1], 1))
@@ -226,6 +225,9 @@ def get_data_batch(target_list, offset):
 		x = np.reshape(x, (1, x.shape[0], x.shape[1] ))
 		y = np.reshape(y, (1, y.shape[0], y.shape[1] ))
 		# print(x.min(), x.max(), y.min(), y.max() )
+
+		# print('x, y',x.min(), x.max(), y.min(), y.max())
+
 		batch_x.append(x)
 		batch_y.append(y)
 	batch_x = np.array(batch_x)
@@ -274,11 +276,12 @@ def SSIM(y_true, y_pred):
 
 if __name__ == '__main__':
 
-	generate_dicom_to_numpy_slices()
+	# generate_dicom_to_numpy_slices()
 
-	exit()
-	""" generate the numpy 2D slices form the numpy volumes """
-	generate_numpy_slices()
+
+	# only for adf part
+	# """ generate the numpy 2D slices form the numpy volumes """
+	# generate_numpy_slices()
 
 	"""	Get the training and testing data """
 
@@ -308,12 +311,12 @@ if __name__ == '__main__':
 	model3 = Activation('relu')(model)
 	#
 	model = add([model3, model2])
-	#
+	# #
+	# # model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
+	# # model = Activation('relu')(model)
 	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-	# model = Activation('relu')(model)
-	model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
-	model4 = Activation('relu')(model)
-	model = add([model4, model3])
+	# model4 = Activation('relu')(model)
+	# model = add([model4, model3])
 
 	# model = Conv2D(64, (3, 3), padding='same', kernel_initializer='he_normal', data_format='channels_first')(model)
 	# model = Activation('relu')(model)

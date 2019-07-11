@@ -2,8 +2,8 @@ import sys
 import os
 from keras.models import model_from_json
 import numpy as np
+import pydicom
 
-# import train_vdsr
 
 
 import yaml
@@ -80,10 +80,35 @@ def stitch_numpy_slices():
     return
 
 
+def generate_dicom_slices_from_numpy():
+    """ Get the dicom patch sample and replace the pixel data of that with the actual output pixels """
+
+    dicom_patch_file = config_params['dicom_patch_file']
+    sample = pydicom.dcmread(dicom_patch_file)
+
+    """ Read all the files from results dir and generate the dicom slices """
+
+    numpy_output_slices = os.listdir(config_params['np_slices_path'])
+
+    print('-- Generating dicom images from Numpy slices --')
+    for one_file in numpy_output_slices:
+        """ Ingore file which dont have .npy extension """
+        if '.npy' in one_file:
+
+            numpy_output = np.load(config_params['np_slices_path']+one_file)
+
+            numpy_output = numpy_output.astype(dtype='int16')
+
+            sample.PixelData = numpy_output
+            output_file = config_params['dicom_output']+one_file.split('.')[0]+'.dcm'
+            sample.save_as(output_file)
+            print(output_file)
+
+    return
 
 if __name__ == '__main__':
 
-    run_test = False
+    run_test = True
 
     if run_test:
 
@@ -119,14 +144,23 @@ if __name__ == '__main__':
                 inp_pixels = np.reshape(inp_pixels, (1, 1, inp_pixels.shape[0], inp_pixels.shape[1]))
 
                 max_scale = inp_pixels.max()
+
+                print("input :", inp_pixels.min(), inp_pixels.max())
                 """ Get the output from the model and reshape"""
                 out_pixels = vdsr.predict(inp_pixels)
 
+                print("output :", out_pixels.nbytes, out_pixels.shape)
                 out_pixels = np.reshape(out_pixels, target_size)
 
+                # out_pixels = out_pixels.astype(dtype='float16')
+
+
                 # normalize the pixels based on the max pixel value of the input image
-                out_pixels = max_scale*(out_pixels - np.min(out_pixels)) / np.ptp(out_pixels)
-                # out_pixels = np.clip(a=out_pixels,a_min=0, a_max=out_pixels.max())
+                # out_pixels = max_scale*(out_pixels - np.min(out_pixels)) / np.ptp(out_pixels)
+                out_pixels = np.clip(a=out_pixels, a_min=-2000, a_max=max_scale)
+                # out_pixels.astype(dtype='float16').tofile(file=target_path + "/" + filename)
+                print("output :", out_pixels.min(), out_pixels.max())
+                """np.save converts data into 32 bit format"""
                 np.save(file=target_path + "/" + filename, arr=out_pixels)
 
     else:
@@ -134,4 +168,5 @@ if __name__ == '__main__':
 
     """ generates the np_stitched file """
 
-    stitch_numpy_slices()
+    # stitch_numpy_slices()
+    generate_dicom_slices_from_numpy()

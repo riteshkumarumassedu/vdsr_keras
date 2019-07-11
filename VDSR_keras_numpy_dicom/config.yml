@@ -1,4 +1,4 @@
-cuda_device : '4'
+cuda_device : '0'
 
 
 numpy_x_path : './data/numpy_data/x/'
@@ -14,7 +14,7 @@ batch_size  : 8
 epochs  : 700
 LR  : 0.001
 
-save_every : 50
+save_every : 1
 
 steps_per_epoch : 100
 
@@ -31,7 +31,7 @@ test_dest_path  : '../../results'
 pred_tgt_size : [512,512]
 
 
-max_pixel_val : 4200
+max_pixel_val : 3000
 
 np_slices_path : './results/'
 np_stitched_output_path  : './numpy_stitch_output/'
@@ -42,3 +42,7 @@ np_stitched_output_path  : './numpy_stitch_output/'
 dicom_x_path  : './data/dicom_to_numpy/x/'
 dicom_y_path  : './data/dicom_to_numpy/y/'
 dicom_test_path : './data/dicom_to_numpy/test/'
+
+dicom_output  : './numpy_to_dicom/'
+
+dicom_patch_file : './dicom_sample_patch/sample.dcm'
